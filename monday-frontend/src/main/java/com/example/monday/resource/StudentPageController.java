@@ -75,7 +75,7 @@ public class StudentPageController {
         if (student != null) {
             model.addAttribute("student", student);
         } else {
-            model.addAttribute("student", "Nie znaleziono studenta o podanym numerze telefonu");
+            model.addAttribute("message", "Nie znaleziono studenta o podanym numerze telefonu");
         }
         return "studentDetails";
     }

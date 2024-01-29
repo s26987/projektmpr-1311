@@ -6,50 +6,32 @@
     <link rel="stylesheet" th:href="@{/styles.css}">
 </head>
 <body>
+<p data-test="hello-message" th:text="'Hello ' + ${name != null ? name : 'World'}"></p>
+Hello <p th:if="${name} != null" th:text="${name}"></p>
+<p th:unless="${name} != null">World</p>
 
-<div class="container">
-    <h1 th:text="'Hello ' + (${name} != null ? ${name} : 'World')">Hello World</h1>
+<form action="/students-page/email" method="get">
+    <input type="text" name="email" placeholder="Wpisz email studenta">
+    <button type="submit">Szukaj po Emailu</button>
+</form>
+<form action="/students-page/phone" method="get">
+    <input type="text" name="phoneNumber" placeholder="Wpisz numer telefonu studenta">
+    <button type="submit">Szukaj po Numerze Telefonu</button>
+</form>
 
-    <table>
-        <thead>
-        <tr>
-            <th>Imię</th>
-            <th>Jednostka</th>
-            <th>Indeks</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="student : ${students}">
-            <td th:text="${student.name}">Imię</td>
-            <td th:text="${student.unit}">Jednostka</td>
-            <td th:text="${student.index}">Indeks</td>
-        </tr>
-        </tbody>
-    </table>
+<table>
+    <tbody>
+    <tr th:each="student : ${students}">
+        <td th:text="${student.name}"></td>
+        <td th:text="${student.unit}"></td>
+        <td th:text="${student.index}"></td>
+        <td><a th:href="@{/students-page/update/{id}(id=${student.id})}">Aktualizuj</a></td>
+    </tr>
+    </tbody>
+</table>
 
-    <div class="buttons">
-        <a th:href="@{/students-page/add}" class="btn">Dodaj Studenta</a>
-        <a th:href="@{/studentDetails}" class="btn">Szczegóły studenta</a>
-        <a th:href="@{/students-page/email/}" class="btn">Szukaj studenta po emailu</a>
-        <a th:href="@{/students-page/phone/}" class="btn">Szukaj studenta po numerze telefonu</a>
-        <a th:href="@{/updateStudent}" class="btn">Aktualizuj studenta</a>
-    </div>
+<a th:href="@{/students-page/add}">Dodaj Studenta</a>
 
-    <form th:action="@{/students-page/email/}" method="get">
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required>
-        <input type="submit" value="Szukaj studenta po emailu">
-    </form>
-
-    <form action="/students-page/phone" method="get">
-        <label for="phoneNumber">Phone Number:</label><br>
-        <input type="text" id="phoneNumber" name="phoneNumber"><br>
-        <input type="submit" value="Search">
-    </form>
-
-</div>
-
-<footer th:insert="~{footer.html}"></footer>
-
+<footer th:insert="footer.html"></footer>
 </body>
 </html>

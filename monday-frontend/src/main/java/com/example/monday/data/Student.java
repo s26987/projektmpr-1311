@@ -28,6 +28,8 @@ public class Student {
         this.index = index;
     }
 
+
+
     @Id
     @GeneratedValue
     private UUID id;

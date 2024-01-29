@@ -1,16 +1,23 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Student Details</title>
+    <meta charset="UTF-8">
+    <title>Szczegóły Studenta</title>
+    <link rel="stylesheet" th:href="@{/styles.css}">
 </head>
 <body>
-<h1>Student Details</h1>
-<p th:text="${message}"></p>
-<p>ID: <span th:text="${student?.id}"></span></p>
-<p>Name: <span th:text="${student?.name}"></span></p>
-<p>Unit: <span th:text="${student?.unit}"></span></p>
-<p>Index: <span th:text="${student?.index}"></span></p>
-<p>Email: <span th:text="${student?.email}"></span></p>
-<p>Phone: <span th:text="${student?.phoneNumber}"></span></p>
+<h1>Szczegóły Studenta</h1>
+<div th:if="${student} != null">
+    <p>Imię: <span th:text="${student.name}"></span></p>
+    <p>Jednostka Studencka: <span th:text="${student.unit}"></span></p>
+    <p>Indeks: <span th:text="${student.index}"></span></p>
+    <p>Email: <span th:text="${student.email}"></span></p>
+    <p>Numer Telefonu: <span th:text="${student.phoneNumber}"></span></p>
+</div>
+<div th:if="${student} == null">
+    <p>Student nie został znaleziony.</p>
+</div>
+
+<a href="/students-page">Powrót do listy studentów</a>
 </body>
 </html>
