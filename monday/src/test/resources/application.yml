@@ -1,0 +1,2 @@
+#ten plik dodajemy aby nadpisać konfigurację w aplikacji domyślną testową konfiguracją springa
+#np. konfiguracją bazy danych (tu domyślnie używać będziemy in memory h2)

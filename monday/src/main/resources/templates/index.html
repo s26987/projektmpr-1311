@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Students</title>
+<!--    dołączenie pliku css do stylowania projektu, przez thymeleafowy znacznik
+wskazuje na to początek th: - pozostała część href mówi nam, że odnosimy się do referencji pliku
+zapis z @{} oznacza, że podajemy adres do rozwiązania przez thymeleaf w docelowym pliku html
+jaki zostanie zwrócony do klienta/użytkownika -->
+    <link rel="stylesheet" th:href="@{/styles.css}">
+</head>
+<body>
+<!--znacznik th:text mówi nam jaki tekst ma zostać wprowadzony do znacznika html w którym się znajduje
+możemy tu zawierać podstawowe konstrucje javowe
+zapis z ${} pozwala nam odwołać się do wartości zmiennej, lub wartości wyliczonej zmiennej jak ma to miejsce w przykładzie poniżej
+wartość name jest pobierana na podstawie atrybutu dodanego do modelu w metodzie controllera-->
+<p data-test="hello-message" th:text="'Hello ' + ${name != null ? name : 'World'}"></p>
+<!-- th:if i th:unless to odpowiednik konstrukcji if else, z tym wyjątkiem, że znacznik th:unless musi dostać tu ten sam warunek co if aby zadziałać jak else -->
+Hello <p th:if="${name} != null" th:text="${name}"></p>
+<p th:unless="${name} != null">World</p>
+
+<table>
+    <tbody>
+<!--    konstrukcja forEach w thymeleaf realizowana jest przez znacznik th:each, a dalej zapis wygląda jak w forEach w javie
+dzięki temu zapisowi powstanie wiersz dla każdego studenta z kolumnami zdefiniowanymi poniżej-->
+    <tr th:each="student : ${students}">
+<!--        możemy teraz odwoływać się do wartości przechowywanych w obiekcie student i wyświetlić je na froncie-->
+
+        <td th:text="${student.name}"></td>
+        <td th:text="${student.unit}"></td>
+        <td th:text="${student.index}"></td>
+    </tr>
+    </tbody>
+</table>
+<!--kolejne zastosowanie th:href - tym razem jest to odwołanie do adresu w naszej aplikacji.
+o przeniesienie nas na nowy adres zadba znacznik <a>, a zwrócenie odpowiedniego pliku html będzie obsłużone przez kontroler-->
+<a th:href="@{/students-page/add}">Dodaj Studenta</a>
+</body>
+<!--znacznik th:insert z kolei pozwala nam korzystać z "komponentów" - fragmentów plików html, które mogą być reużywalne na wielu stronach
+w tym wypadku dopuszczone jest podanie samej nazwy pliku, ponieważ footer.html znajduje się w tym samym folderze co nasz plik
+gdyby tak nie było należałoby podać adres z @{} - jak miało to miejsce np. w przypadku pliku css-->
+<footer th:insert="footer.html"></footer>
+</html>
