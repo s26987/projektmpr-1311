@@ -21,14 +21,27 @@ public class Student {
         this.unit = unit;
         this.index = index;
     }
+    public Student(UUID id, String name, StudentUnit unit, long index) {
+        this.id = id;
+        this.name = name;
+        this.unit = unit;
+        this.index = index;
+    }
 
     @Id
     @GeneratedValue
     private UUID id;
+    @Setter
     private String name;
     @Enumerated(EnumType.STRING)
+    @Setter
     private StudentUnit unit;
     @Setter
     private Long index;
+    @Setter
+    private String email;
+    @Setter
+    private String phoneNumber;
+
 
 }

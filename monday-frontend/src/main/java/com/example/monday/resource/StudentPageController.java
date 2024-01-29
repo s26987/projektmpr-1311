@@ -1,14 +1,14 @@
 package com.example.monday.resource;
 
+import com.example.monday.data.Student;
 import com.example.monday.data.StudentRepository;
 import com.example.monday.service.StudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 
 @Controller //Użycie tej adnotacji definiuje Springowego beana, od @RestController, którego używaliśmy do tej pory różni się tym,
@@ -20,6 +20,7 @@ public class StudentPageController {
 
     private final StudentRepository studentRepository;
     private final StudentService studentService;
+    private final StudentMapper studentMapper;
 
     @GetMapping//korzystamy z adnotacji znanych nam z restowych kontrollerów, żeby określić metodę (opcjonalnie też ścieżkę do metody)
     public String returnStudentsPage(Model model, String name) { // jeśli chcemy operować danymi na widoku to w parametrze zawsze musimy pobrać Model - jest to model ze wzorca MVC
@@ -46,4 +47,37 @@ public class StudentPageController {
         //do nazwy szablonu musimy dodać 'redirect:{ścieżka do strony}' aby zostać przeniesionym po kliknięciu przycisku na inną stronę
         //robimy to tylko w przypadku gdy jest to przeniesienie na podstawie akcji użytkownika, jeśli udostępniamy stronę na podstawie adresu w przeglądarce podajemy tylko nazwę szablonu
     }
+
+    @GetMapping("/update/{id}")
+    public String displayUpdateStudentPage(@PathVariable UUID id, Model model) {
+        StudentDto studentDto = studentService.getStudentById(id);
+        Student student = studentMapper.toEntity(studentDto);
+        model.addAttribute("student", student);
+        return "updateStudent";
+    }
+
+    @PostMapping("/update/{id}")
+    public String updateStudent(@PathVariable UUID id, @ModelAttribute Student updatedStudent) {
+        studentService.updateStudent(id, updatedStudent);
+        return "redirect:/students-page";
+    }
+
+    @GetMapping("/email")
+    public String getStudentByEmail(@RequestParam String email, Model model) {
+        Student student = studentService.getStudentByEmail(email);
+        model.addAttribute("student", student);
+        return "studentDetails";
+    }
+
+    @GetMapping("/phone")
+    public String getStudentByPhoneNumber(@RequestParam String phoneNumber, Model model) {
+        Student student = studentService.getStudentByPhoneNumber(phoneNumber);
+        if (student != null) {
+            model.addAttribute("student", student);
+        } else {
+            model.addAttribute("student", "Nie znaleziono studenta o podanym numerze telefonu");
+        }
+        return "studentDetails";
+    }
+
 }

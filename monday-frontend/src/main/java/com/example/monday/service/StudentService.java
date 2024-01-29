@@ -1,5 +1,7 @@
 package com.example.monday.service;
 
+import com.example.monday.data.Student;
+import com.example.monday.data.StudentDataComponent;
 import com.example.monday.data.StudentRepository;
 import com.example.monday.data.StudentUnit;
 import com.example.monday.excetionhandler.InvalidStudentNameException;
@@ -9,6 +11,7 @@ import com.example.monday.resource.StudentDto;
 import com.example.monday.resource.StudentMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
@@ -24,7 +27,6 @@ import java.util.UUID;
 // Zamiast konstruktora używamy adnotacji z pakietu Lombok - dzięki temu jeśli dodamy tu inny Bean nie musimy już nic robić - konstruktor zaktualizuje nam lombok.
 @Log
 @Service
-@RequiredArgsConstructor
 public class StudentService {
 
     //definiujemy stałą z adresem endpointu aplikacji, do której wysyłamy zapytanie
@@ -32,6 +34,15 @@ public class StudentService {
 
     private final StudentRepository studentRepository;
     private final StudentMapper studentMapper;
+    private final StudentDataComponent studentDataComponent;
+
+
+    @Autowired
+    public StudentService(StudentRepository studentRepository, StudentMapper studentMapper) {
+        this.studentRepository = studentRepository;
+        this.studentMapper = studentMapper;
+        this.studentDataComponent = new StudentDataComponent();
+    }
 
     //Synchroniczny "klient" webowy - dzięki tej klasie możemy wywołać synchroniczne zapytanie restowe do zewnętrznej aplikacji
     private final RestTemplate restTemplate = new RestTemplate();
@@ -105,5 +116,18 @@ public class StudentService {
         } catch (HttpServerErrorException e) {
             throw new RuntimeException();
         }
+    }
+
+    //Dodane metody do phonenumber, update, oraz email
+    public Student getStudentByEmail(String email) {
+        return studentDataComponent.getStudentByEmail(email);
+    }
+
+    public void updateStudent(UUID id, Student updatedStudent) {
+        studentDataComponent.updateStudent(id, updatedStudent);
+    }
+
+    public Student getStudentByPhoneNumber(String phoneNumber) {
+        return studentDataComponent.getStudentByPhoneNumber(phoneNumber);
     }
 }

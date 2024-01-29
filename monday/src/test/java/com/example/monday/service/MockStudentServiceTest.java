@@ -32,6 +32,8 @@ class MockStudentServiceTest {
 
     private StudentRepository studentRepository = mock(StudentRepository.class);
 
+    private StudentDataComponent studentDataComponent = new StudentDataComponent();
+
     private StudentMapper studentMapper = new StudentMapper();
 
     //InjectMocks pozwala nam stworzyć klasę testowaną z wykorzystaniem obiektów, które zdefiniowaliśmy
@@ -84,5 +86,50 @@ class MockStudentServiceTest {
         assertEquals(student.getUnit(), savedStudent.getName());
         assertEquals(student.getUnit(), savedStudent.getUnit());
         assertEquals(70, savedStudent.getIndex());
+    }
+
+    //test sprawdzajacy czy metoda getStudentByEmail zwraca poprawnego studenta
+    @Test
+    void givenValidEmailWhenGetStudentByEmailThenReturnStudent() {
+
+        String email = "karola@example.com";
+        Student student = new Student("Karola", StudentUnit.GDANSK, 1L, email, "123456789");
+        studentDataComponent.saveStudent(student);
+
+        Student result = studentDataComponent.getStudentByEmail(email);
+
+        assertEquals(student.getEmail(), result.getEmail());
+    }
+
+    //Sprawdza czy update poprawnie aktualizuje studenta
+    @Test
+    void givenValidIdWhenUpdateStudentThenStudentIsUpdated() {
+        UUID id = UUID.randomUUID();
+        Student student = new Student("Karola", StudentUnit.GDANSK, 1L, "karola@example.com", "123456789");
+        studentDataComponent.saveStudent(student);
+        Student updatedStudent = new Student("Karola", StudentUnit.WARSZAWA, 2L, "karola2@example.com", "987654321");
+
+        studentDataComponent.updateStudent(id, updatedStudent);
+        Student result = studentDataComponent.getStudentById(id);
+
+        assertEquals(updatedStudent.getName(), result.getName());
+        assertEquals(updatedStudent.getUnit(), result.getUnit());
+        assertEquals(updatedStudent.getIndex(), result.getIndex());
+        assertEquals(updatedStudent.getEmail(), result.getEmail());
+        assertEquals(updatedStudent.getPhoneNumber(), result.getPhoneNumber());
+    }
+
+    //Sprawdza czy metoda getStudentByPhoneNumber zwraca poprawnego studenta
+
+    @Test
+    void givenValidPhoneNumberWhenGetStudentByPhoneNumberThenReturnStudent() {
+
+        String phoneNumber = "123456789";
+        Student student = new Student("Karola", StudentUnit.GDANSK, 1L, "karola@example.com", phoneNumber);
+        studentDataComponent.saveStudent(student);
+
+        Student result = studentDataComponent.getStudentByPhoneNumber(phoneNumber);
+
+        assertEquals(student.getPhoneNumber(), result.getPhoneNumber());
     }
 }

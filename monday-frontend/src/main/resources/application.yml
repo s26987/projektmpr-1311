@@ -2,12 +2,15 @@ spring:
   application:
     name: monday
   datasource:
-    url: jdbc:postgresql://localhost:54329/student
-    username: student
-    password: student
+    url: jdbc:h2:mem:students
+    driverClassName: org.h2.Driver
+    username: sa
+    password: password
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
     show-sql: true
+  thymeleaf:
+    cache: false
 server:
-  port: 8081 #ustawiamy inny port, ponieważ działać będą dwie aplikacje
+  port: 8081

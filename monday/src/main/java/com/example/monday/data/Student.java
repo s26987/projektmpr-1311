@@ -16,7 +16,22 @@ public class Student {
         this.unit = unit;
 
     }
-    public Student(String name, StudentUnit unit, Long index) {
+    public Student(String name, StudentUnit unit, Long index, String email, String phoneNumber) {
+        this.name = name;
+        this.unit = unit;
+        this.index = index;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+    }
+
+    public Student(String name, StudentUnit unit, long index) {
+        this.name = name;
+        this.unit = unit;
+        this.index = index;
+    }
+
+    public Student(UUID id, String name, StudentUnit unit, long index) {
+        this.id = id;
         this.name = name;
         this.unit = unit;
         this.index = index;
@@ -25,10 +40,16 @@ public class Student {
     @Id
     @GeneratedValue
     private UUID id;
+    @Setter
     private String name;
     @Enumerated(EnumType.STRING)
+    @Setter
     private StudentUnit unit;
     @Setter
     private Long index;
+    @Setter
+    private String email;
+    @Setter
+    private String phoneNumber;
 
 }

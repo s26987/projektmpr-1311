@@ -18,4 +18,13 @@ public class StudentMapper {
     public Student toEntity(CreateStudent createStudent) {
         return new Student(createStudent.getName(), createStudent.getUnit());
     }
+
+    public Student toEntity(StudentDto studentDto) {
+        return new Student(
+                studentDto.id(),
+                studentDto.name(),
+                studentDto.unit(),
+                studentDto.index()
+        );
+    }
 }

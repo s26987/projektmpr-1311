@@ -36,4 +36,31 @@ public class StudentDataComponent {
                 .max(Comparator.naturalOrder())
                 .orElse(0L);
     }
+
+    public void updateStudent(UUID id, Student updatedStudent) {
+        Student student = getStudentById(id);
+        if (student != null) {
+            student.setName(updatedStudent.getName());
+            student.setUnit(updatedStudent.getUnit());
+            student.setIndex(updatedStudent.getIndex());
+            student.setEmail(updatedStudent.getEmail());
+            student.setPhoneNumber(updatedStudent.getPhoneNumber());
+        }
+    }
+
+    // Wyszukuje po emailu
+    public Student getStudentByEmail(String email) {
+        return students.stream()
+                .filter(it -> it.getEmail().equals(email))
+                .findFirst()
+                .orElse(null);
+    }
+
+    // Wyszukuje po numerze telefonu
+    public Student getStudentByPhoneNumber(String phoneNumber) {
+        return students.stream()
+                .filter(it -> it.getPhoneNumber().equals(phoneNumber))
+                .findFirst()
+                .orElse(null);
+    }
 }

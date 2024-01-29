@@ -1,6 +1,7 @@
 package com.example.monday.service;
 
 import com.example.monday.data.Student;
+import com.example.monday.data.StudentDataComponent;
 import com.example.monday.data.StudentRepository;
 import com.example.monday.data.StudentUnit;
 import com.example.monday.excetionhandler.RecordNotFoundException;
@@ -9,6 +10,7 @@ import com.example.monday.resource.StudentDto;
 import com.example.monday.resource.StudentMapper;
 import com.example.monday.excetionhandler.InvalidStudentNameException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,11 +21,18 @@ import java.util.UUID;
 // podając to jako parametr konstruktora. Dopuszcza się też wstrzyknięcie Beana przez setter z adnotacją @Autowired
 // Zamiast konstruktora używamy adnotacji z pakietu Lombok - dzięki temu jeśli dodamy tu inny Bean nie musimy już nic robić - konstruktor zaktualizuje nam lombok.
 @Service
-@RequiredArgsConstructor
 public class StudentService {
 
+    private final StudentDataComponent studentDataComponent;
     private final StudentRepository studentRepository;
     private final StudentMapper studentMapper;
+
+    @Autowired
+    public StudentService(StudentRepository studentRepository, StudentMapper studentMapper) {
+        this.studentRepository = studentRepository;
+        this.studentMapper = studentMapper;
+        this.studentDataComponent = new StudentDataComponent();
+    }
 
 
     public Student saveStudent(CreateStudent createStudent) {
@@ -62,5 +71,18 @@ public class StudentService {
                 .stream()
                 .map(studentMapper::toDto)
                 .toList();
+    }
+
+    //Dodane metody do phonenumber, update, oraz email
+    public Student getStudentByEmail(String email) {
+        return studentDataComponent.getStudentByEmail(email);
+    }
+
+    public void updateStudent(UUID id, Student updatedStudent) {
+        studentDataComponent.updateStudent(id, updatedStudent);
+    }
+
+    public Student getStudentByPhoneNumber(String phoneNumber) {
+        return studentDataComponent.getStudentByPhoneNumber(phoneNumber);
     }
 }

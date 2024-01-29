@@ -46,4 +46,9 @@ public class StudentPageController {
         //do nazwy szablonu musimy dodać 'redirect:{ścieżka do strony}' aby zostać przeniesionym po kliknięciu przycisku na inną stronę
         //robimy to tylko w przypadku gdy jest to przeniesienie na podstawie akcji użytkownika, jeśli udostępniamy stronę na podstawie adresu w przeglądarce podajemy tylko nazwę szablonu
     }
+
+    @GetMapping("/test")
+    public String testPage() {
+        return "test";
+    }
 }

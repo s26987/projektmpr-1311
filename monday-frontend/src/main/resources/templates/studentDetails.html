@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Student Details</title>
+</head>
+<body>
+<h1>Student Details</h1>
+<p th:text="${message}"></p>
+<p>ID: <span th:text="${student?.id}"></span></p>
+<p>Name: <span th:text="${student?.name}"></span></p>
+<p>Unit: <span th:text="${student?.unit}"></span></p>
+<p>Index: <span th:text="${student?.index}"></span></p>
+<p>Email: <span th:text="${student?.email}"></span></p>
+<p>Phone: <span th:text="${student?.phoneNumber}"></span></p>
+</body>
+</html>
